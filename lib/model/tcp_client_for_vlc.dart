@@ -95,7 +95,7 @@ class TCPClientForVLC {
   
 
   _onDataReceived(String dataReceived) {
-    //print("dataReceived");
+    print("dataReceived");
     int index = dataReceived.indexOf("{");
     //print(index);
     if (index != -1) {
@@ -127,11 +127,11 @@ class TCPClientForVLC {
         _onDataReceived(utf8.decode(event));
       }, onError: (error) {
         //This may not get called all the time
-        //print(error);
+        print(error);
       }, onDone: () {
         //This will get called when socket gets closed due to error, so retrying connection from here
         _reTryFetching();
-        //print("Socket Closed");
+        print("Socket Closed");
       });
     } catch (e) {
       isConnected = false;
