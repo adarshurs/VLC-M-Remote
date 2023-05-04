@@ -43,7 +43,7 @@ class TCPClientForVLC {
   }
 
   startFetchingVLCStatus() async {
-    //int counter = 0;
+    int counter = 0;
 
     _getVLCStatusTimer = null;
     await connectToVLC().then((isConnected) async {
@@ -52,10 +52,12 @@ class TCPClientForVLC {
         sendRequestToVLC(null);
         _getVLCStatusTimer = Timer.periodic(_statusUpdateInterval, (timer) {
           sendRequestToVLC(null);
-          //counter++;
-          //if (counter > 10) {
+          counter++;
+          if (counter == 10) {
           //stopFetchingVLCStatus();
-          //}
+          counter = 0;
+          _emitVLCNotFoundError();
+          }
         });
       } else {
         if (_keepTryingToConnect) {
@@ -85,11 +87,15 @@ class TCPClientForVLC {
       _reTryFetchingCounter++;
 
       if (_reTryFetchingCounter >= 5) {
-        _vlcStatusResponse.errorMessage = "VLCNotFound";
-        _streamController?.sink.add(_vlcStatusResponse);
+        _emitVLCNotFoundError();
         _reTryFetchingCounter = 0;
       }
     }
+  }
+
+  _emitVLCNotFoundError(){
+      _vlcStatusResponse.errorMessage = "VLCNotFound";
+      _streamController?.sink.add(_vlcStatusResponse);
   }
 
   
