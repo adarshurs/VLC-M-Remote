@@ -42,20 +42,19 @@ class TCPClientForVLC {
 //    startFetchingVLCStatus();
   }
 
+  int _noResponseDetectionCounter = 0;
   startFetchingVLCStatus() async {
-    int counter = 0;
-
+  _noResponseDetectionCounter = 0;  
     _getVLCStatusTimer = null;
     await connectToVLC().then((isConnected) async {
       if (isConnected) {
         //print("Socket Connected");
-        sendRequestToVLC(null);
+        _sendRequestToVLC(null);
         _getVLCStatusTimer = Timer.periodic(_statusUpdateInterval, (timer) {
-          sendRequestToVLC(null);
-          counter++;
-          if (counter == 10) {
-          //stopFetchingVLCStatus();
-          counter = 0;
+          _sendRequestToVLC(null);
+          _noResponseDetectionCounter++;
+          if (_noResponseDetectionCounter == 10) {
+          _noResponseDetectionCounter = 0;
           _emitVLCNotFoundError();
           }
         });
@@ -74,6 +73,7 @@ class TCPClientForVLC {
     _keepTryingToConnect = false;
     _getVLCStatusTimer?.cancel();
     _socket?.close();
+    _socket = null;
   }
 
   
@@ -81,6 +81,7 @@ class TCPClientForVLC {
   _reTryFetching() async {
     _getVLCStatusTimer?.cancel();
     _socket?.close();
+    _socket = null;
     if (_keepTryingToConnect) {
       await Future.delayed(const Duration(seconds: 1));
       startFetchingVLCStatus();
@@ -101,7 +102,7 @@ class TCPClientForVLC {
   
 
   _onDataReceived(String dataReceived) {
-    print("dataReceived");
+    //print("dataReceived");
     int index = dataReceived.indexOf("{");
     //print(index);
     if (index != -1) {
@@ -117,6 +118,7 @@ class TCPClientForVLC {
       }
       } catch(e){
         print(e.toString());
+        //print(dataReceived);
       }
     } else {
       // print(dataReceived);
@@ -157,9 +159,11 @@ class TCPClientForVLC {
     return utf8.encode(data);
   }
 
+  
   //passing a null to requestToSend, gets the vlc status
-  sendRequestToVLC(String? requestToSend) {
-    print("Socket send");
-    _socket?.add(_getRequestHeader(requestToSend ?? _vlcStatusPath));
+  _sendRequestToVLC(String? requestToSend) {
+      //print("Socket send");
+      _noResponseDetectionCounter = 0;
+      _socket?.add(_getRequestHeader(requestToSend ?? _vlcStatusPath));
   }
 }

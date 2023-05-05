@@ -41,6 +41,7 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
   }
 
   Future stopFetchingVLCStatus() async {
+    print("stopped");
     _vlcStatusResponseSubscription
         ?.cancel()
         .then((value) => _vlcStatusResponseSubscription = null);
