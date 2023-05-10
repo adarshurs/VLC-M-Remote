@@ -58,4 +58,8 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
     //emit(VlcStatusDisconnected());
   }
 
+  Future updateVLCStatus(String updateRequest) async{
+    tcpClientForVLC?.sendRequestToVLC(updateRequest);
+  }
+
 }
