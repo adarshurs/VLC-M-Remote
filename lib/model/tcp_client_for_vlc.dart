@@ -43,15 +43,16 @@ class TCPClientForVLC {
   }
 
   int _noResponseDetectionCounter = 0;
+
   startFetchingVLCStatus() async {
   _noResponseDetectionCounter = 0;  
     _getVLCStatusTimer = null;
     await connectToVLC().then((isConnected) async {
       if (isConnected) {
         //print("Socket Connected");
-        _sendRequestToVLC(null);
+        sendRequestToVLC(null);
         _getVLCStatusTimer = Timer.periodic(_statusUpdateInterval, (timer) {
-          _sendRequestToVLC(null);
+          sendRequestToVLC(null);
           _noResponseDetectionCounter++;
           if (_noResponseDetectionCounter == 10) {
           _noResponseDetectionCounter = 0;
@@ -68,15 +69,12 @@ class TCPClientForVLC {
     });
   }
 
-
   stopFetchingVLCStatus() {
     _keepTryingToConnect = false;
     _getVLCStatusTimer?.cancel();
     _socket?.close();
     _socket = null;
   }
-
-  
 
   _reTryFetching() async {
     _getVLCStatusTimer?.cancel();
@@ -98,8 +96,6 @@ class TCPClientForVLC {
       _vlcStatusResponse.errorMessage = "VLCNotFound";
       _streamController?.sink.add(_vlcStatusResponse);
   }
-
-  
 
   _onDataReceived(String dataReceived) {
     //print("dataReceived");
@@ -159,11 +155,9 @@ class TCPClientForVLC {
     return utf8.encode(data);
   }
 
-  
   //passing a null to requestToSend, gets the vlc status
-  _sendRequestToVLC(String? requestToSend) {
-      //print("Socket send");
+  sendRequestToVLC(String? requestToSend) {
       _noResponseDetectionCounter = 0;
-      _socket?.add(_getRequestHeader(requestToSend ?? _vlcStatusPath));
+      _socket?.add(_getRequestHeader(_vlcStatusPath + (requestToSend ?? "")));
   }
 }
