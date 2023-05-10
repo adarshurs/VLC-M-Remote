@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.0.25
 
-* TODO: Describe initial release.
+* TODO: Updated folder structure for vlc_folder & vlc_playlist
