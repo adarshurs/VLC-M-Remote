@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:vlc_m_remote/model/vlc_status.dart';
-import 'package:vlc_m_remote/model/vlc_status_response.dart';
+import 'package:vlc_m_remote/vlc_status/model/vlc_status.dart';
+import 'package:vlc_m_remote/vlc_status/model/vlc_status_response.dart';
+
+
 
 class TCPClientForVLC {
   final String ipAddress;

@@ -1,5 +1,4 @@
-
-import '../utils/utils.dart';
+import 'package:vlc_m_remote/utils/utils.dart';
 
 class VLCStatus {
 
