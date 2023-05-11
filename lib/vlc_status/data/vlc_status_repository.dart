@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:vlc_m_remote/vlc_status/model/vlc_status.dart';
-import 'package:vlc_m_remote/vlc_status/model/vlc_status_response.dart';
+import 'model/vlc_status.dart';
+import 'model/vlc_status_response.dart';
 
-
-
-class TCPClientForVLC {
+class VLCStatusRepository {
   final String ipAddress;
   late final String _password;
   final String vlcPort;
@@ -24,7 +22,7 @@ class TCPClientForVLC {
   int _reTryFetchingCounter = 0;
   VLCStatusResponse _vlcStatusResponse = VLCStatusResponse(vlcStatus: VLCStatus(), errorMessage: '');
 
-  TCPClientForVLC(
+  VLCStatusRepository(
       {required this.ipAddress,
       this.vlcPort = "8080",
       required String vlcPassword}) {

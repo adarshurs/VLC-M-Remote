@@ -3,9 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vlc_m_remote/vlc_status/model/tcp_client_for_vlc.dart';
-import 'package:vlc_m_remote/vlc_status/model/vlc_server.dart';
-import 'package:vlc_m_remote/vlc_status/model/vlc_status_response.dart';
+import 'package:vlc_m_remote/vlc_status/data/model/vlc_server.dart';
+import 'package:vlc_m_remote/vlc_status/data/model/vlc_status_response.dart';
+import 'package:vlc_m_remote/vlc_status/data/vlc_status_repository.dart';
 
 
 part 'vlc_status_state.dart';
@@ -15,14 +15,14 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
 
   VlcStatusCubit(this.vlcServerToToConnect) : super(const VlcStatusInitial());
 
-  TCPClientForVLC? tcpClientForVLC;
+  VLCStatusRepository? tcpClientForVLC;
   StreamSubscription<dynamic>? _vlcStatusResponseSubscription;
 
   Future fetchVLCStatus() async {
     try {
       emit(const VlcStatusConnecting());
       _vlcStatusResponseSubscription = null;
-      tcpClientForVLC = TCPClientForVLC(
+      tcpClientForVLC = VLCStatusRepository(
           ipAddress: vlcServerToToConnect.ipAddress,
           vlcPort: vlcServerToToConnect.vlcPort,
           vlcPassword: vlcServerToToConnect.vlcPassword!);
