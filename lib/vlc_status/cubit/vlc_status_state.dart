@@ -11,6 +11,7 @@ class VlcStatusInitial extends VlcStatusState {
 class VlcStatusConnecting extends VlcStatusState {
   const VlcStatusConnecting();
 }
+
 class VlcStatusConnected extends VlcStatusState {
   const VlcStatusConnected();
 }
@@ -33,7 +34,8 @@ final VLCStatusResponse vlcStatusResponse;
 
   @override
   bool operator ==(Object other){
-    if(identical(this, 0)) return true;
+    //if(identical(this, 0)) return true;
+    if(identical(this, other)) return true;
     return other is VlcStatusLoaded && other.vlcStatusResponse == vlcStatusResponse;
   }
 
