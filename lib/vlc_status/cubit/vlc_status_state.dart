@@ -41,7 +41,6 @@ final VLCStatusResponse vlcStatusResponse;
 
   @override
   int get hashCode => vlcStatusResponse.hashCode;
-
 }
 
 
