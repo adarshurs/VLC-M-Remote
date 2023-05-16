@@ -103,7 +103,6 @@ class VLCStatusRepository {
     //print(index);
     if (index != -1) {
       var body = dataReceived.substring(index);
-      // print(body);
       try{
       VLCStatus vlcStatus = VLCStatus.fromJson(jsonDecode(body));
       _vlcStatusResponse =
@@ -114,7 +113,6 @@ class VLCStatusRepository {
       }
       } catch(e){
         print(e.toString());
-        //print(dataReceived);
       }
     } else {
       // print(dataReceived);

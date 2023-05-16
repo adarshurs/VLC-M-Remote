@@ -30,8 +30,25 @@
 //   static const columnSize = "size";
 // }
 
+import 'dart:html';
 
-class VLCFolderItem {
+class VlcBrowseResponse {
+  List<VlcBrowseItem>? folders;
+
+  VlcBrowseResponse({this.folders});
+
+  VlcBrowseResponse.fromJson(Map<String, dynamic> json) {
+    if (json['element'] != null) {
+      folders = <VlcBrowseItem>[];
+      json['element'].forEach((v) {
+        folders!.add(VlcBrowseItem.fromJson(v));
+      });
+    }
+    //return folders;
+  }
+}
+
+class VlcBrowseItem {
   String? type;
   String? path;
   String? name;
@@ -44,7 +61,7 @@ class VLCFolderItem {
   String? uri;
   int? size;
 
-  VLCFolderItem(
+  VlcBrowseItem(
       {this.type,
       this.path,
       this.name,
@@ -57,7 +74,7 @@ class VLCFolderItem {
       this.uri,
       this.size});
 
-  VLCFolderItem.fromJson(Map<String, dynamic> json) {
+  VlcBrowseItem.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     path = json['path'];
     name = json['name'];
@@ -71,19 +88,32 @@ class VLCFolderItem {
     size = json['size'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    data['path'] = path;
-    data['name'] = name;
-    data['access_time'] = accessTime;
-    data['uid'] = uid;
-    data['creation_time'] = creationTime;
-    data['gid'] = gid;
-    data['modification_time'] = modificationTime;
-    data['mode'] = mode;
-    data['uri'] = uri;
-    data['size'] = size;
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['type'] = type;
+  //   data['path'] = path;
+  //   data['name'] = name;
+  //   data['access_time'] = accessTime;
+  //   data['uid'] = uid;
+  //   data['creation_time'] = creationTime;
+  //   data['gid'] = gid;
+  //   data['modification_time'] = modificationTime;
+  //   data['mode'] = mode;
+  //   data['uri'] = uri;
+  //   data['size'] = size;
+  //   return data;
+  // }
+
+
+  // static getVlcBrowseItemsFromJson(Map<String, dynamic> json) {
+  //   List<VLCFolderItem>? vlcFolders;
+  //   if (json['element'] != null) {
+  //     vlcFolders = <VLCFolderItem>[];
+  //     json['element'].forEach((v) {
+  //       vlcFolders!.add(VLCFolderItem.fromJson(v));
+  //     });
+  //   }
+  //   return vlcFolders;
+  // }
+
 }
