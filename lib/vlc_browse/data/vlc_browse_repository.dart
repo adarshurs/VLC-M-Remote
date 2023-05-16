@@ -18,7 +18,7 @@ VLCBrowseRepository(
     _password = base64Url.encode(utf8.encode("" + ":" + vlcPassword));
   }
 
-Future<VlcBrowseResponse?> getHomeFolderData() async {
+Future<VlcBrowseResponse?> getFolderData() async {
   // var response = http.post(url);
   // var getResponse = http.get(url);
   // print(getResponse);

@@ -11,7 +11,7 @@ class VlcBrowseResponse {
       json['element'].forEach((v) {
         folders!.add(VlcBrowseItem.fromJson(v));
       });
-    } else {
+    } else { 
       errorMessage = "Error";
     }
   }
