@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_item.dart';
+//sample comment
 
 @immutable
 abstract class VlcBrowseItemState {
