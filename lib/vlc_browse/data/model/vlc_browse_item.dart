@@ -1,54 +1,23 @@
-// class VLCFolderItem {
-//   late int id;
-//   String name;
-//   String type;
-//   String path;
-//   String uri;
-//   bool hasAdded = false;
-//   String? creationTime;
-//   String? size;
-
-//   VLCFolderItem(this.id, this.name, this.type, this.path, this.uri);
-
-//   // VLCFolder.fromMap(Map<String, dynamic> map) {}
-
-//   Map<String, dynamic> toMap() {
-//     return {};
-//   }
-
-//   @override
-//   String toString() {
-//     return 'VLCFolder{id: $id, name: $name, path: $path}';
-//   }
-
-//   static const columnId = 'id';
-//   static const columnName = 'name';
-//   static const columnType = 'type';
-//   static const columnUri = "uri";
-//   static const columnHasAdded = "hasAdded";
-//   static const columnCreationTime = "creationTime";
-//   static const columnSize = "size";
-// }
-
-import 'dart:html';
-
 class VlcBrowseResponse {
   List<VlcBrowseItem>? folders;
+  String? errorMessage;
 
   VlcBrowseResponse({this.folders});
 
   VlcBrowseResponse.fromJson(Map<String, dynamic> json) {
     if (json['element'] != null) {
       folders = <VlcBrowseItem>[];
+      errorMessage = null;
       json['element'].forEach((v) {
         folders!.add(VlcBrowseItem.fromJson(v));
       });
+    } else {
+      errorMessage = "Error";
     }
-    //return folders;
   }
 }
 
-class VlcBrowseItem {
+class VlcBrowseItem{
   String? type;
   String? path;
   String? name;
@@ -103,7 +72,6 @@ class VlcBrowseItem {
   //   data['size'] = size;
   //   return data;
   // }
-
 
   // static getVlcBrowseItemsFromJson(Map<String, dynamic> json) {
   //   List<VLCFolderItem>? vlcFolders;

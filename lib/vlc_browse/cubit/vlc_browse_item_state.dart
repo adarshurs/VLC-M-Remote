@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_item.dart';
 
 @immutable
 abstract class VlcBrowseItemState {
@@ -11,7 +12,8 @@ class VlcBrowseLoading extends VlcBrowseItemState {
   const VlcBrowseLoading();
 }
 class VlcBrowseLoaded extends VlcBrowseItemState {
-  const VlcBrowseLoaded();
+  final VlcBrowseResponse vlcBrowseResponse;
+  const VlcBrowseLoaded(this.vlcBrowseResponse);
 }
 
 class VlcBrowseLoadingFailed extends VlcBrowseItemState {

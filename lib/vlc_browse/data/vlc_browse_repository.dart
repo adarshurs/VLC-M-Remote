@@ -30,10 +30,12 @@ Future<VlcBrowseResponse?> getHomeFolderData() async {
     var jsonResponse = jsonDecode(response.toString()) as Map<String, dynamic>;
     return VlcBrowseResponse.fromJson(jsonResponse);
   } else if (response.statusCode == 401){
-
+    VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse(); 
+    vlcBrowseResponse.errorMessage = "IncorrectPassword";
+    return vlcBrowseResponse;
   }
-  return null;
+  VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse(); 
+  vlcBrowseResponse.errorMessage = "NoResponse";
+  return VlcBrowseResponse();
 }
-
-
 }
