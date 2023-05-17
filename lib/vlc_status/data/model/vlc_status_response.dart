@@ -1,5 +1,3 @@
-
-
 import 'package:vlc_m_remote/vlc_status/data/model/vlc_status.dart';
 
 class VLCStatusResponse {
@@ -9,7 +7,6 @@ class VLCStatusResponse {
     required this.vlcStatus,
     required this.errorMessage,
   });
-
 
   //VLCStatusResponse(this.vlcStatus, this.errorMessage);
 

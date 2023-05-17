@@ -12,17 +12,17 @@ class VLCControlsConstants {
   static String toggleShuffle = "command=key&val=random";
   static String toggleSubtitle = "command=key&val=subtitle-track";
 
-  static String seekControl(String value){
+  static String seekControl(String value) {
     return "command=seek&val=$value";
   }
 
-static String seekForward(double currentTime){
+  static String seekForward(double currentTime) {
     currentTime = currentTime + 5;
     currentTime = (currentTime >= 512) ? 512 : currentTime;
     return "command=seek&val=${currentTime.toInt()}";
   }
 
-  static String seekRewind(double currentTime){
+  static String seekRewind(double currentTime) {
     currentTime = currentTime - 5;
     currentTime = (currentTime <= 0) ? 0 : currentTime;
     return "command=seek&val=${currentTime.toInt()}";
@@ -30,17 +30,17 @@ static String seekForward(double currentTime){
 
   //static String volumeControl = "command=volume&val=";
 
-  static String volumeControl(String value){
+  static String volumeControl(String value) {
     return "command=volume&val=$value";
   }
 
-  static String increaseVolume(double currentVolume){
+  static String increaseVolume(double currentVolume) {
     currentVolume = currentVolume + 25.6;
     currentVolume = (currentVolume >= 512) ? 512 : currentVolume;
     return "command=volume&val=$currentVolume";
   }
 
-  static String decreaseVolume(double currentVolume){
+  static String decreaseVolume(double currentVolume) {
     currentVolume = currentVolume - 25.6;
     currentVolume = (currentVolume <= 0) ? 0 : currentVolume;
     return "command=volume&val=$currentVolume";
@@ -48,11 +48,9 @@ static String seekForward(double currentTime){
 
   static String muteVolume = "command=key&val=vol-mute";
 
-
   static String toggleCrop = "command=key&val=crop";
   static String toggleAspectRatio = "command=key&val=aspect-ratio";
   static String takeScreenshot = "command=key&val=snapshot";
-
 
   static String subtitleDelayDown = "command=key&val=subdelay-down";
   static String subtitleDelayUp = "command=key&val=subdelay-up";

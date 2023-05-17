@@ -7,7 +7,6 @@ import 'package:vlc_m_remote/vlc_server.dart';
 import 'package:vlc_m_remote/vlc_status/data/model/vlc_status_response.dart';
 import 'package:vlc_m_remote/vlc_status/data/vlc_status_repository.dart';
 
-
 part 'vlc_status_state.dart';
 
 class VlcStatusCubit extends Cubit<VlcStatusState> {
@@ -27,10 +26,10 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
           vlcPort: vlcServerToToConnect.vlcPort,
           vlcPassword: vlcServerToToConnect.vlcPassword!);
       _vlcStatusResponseSubscription = tcpClientForVLC?.stream?.listen((event) {
-        if(!isClosed){
-          if((event as VLCStatusResponse).errorMessage.isEmpty){
+        if (!isClosed) {
+          if ((event as VLCStatusResponse).errorMessage.isEmpty) {
             emit(VlcStatusLoaded(event));
-          } else if ((event).errorMessage  == "VLCNotFound"){
+          } else if ((event).errorMessage == "VLCNotFound") {
             emit(const VlcStatusNotFound());
           }
         }
@@ -47,19 +46,17 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
         .then((value) => _vlcStatusResponseSubscription = null);
   }
 
-
-  Future pauseFetchingVLCStatus() async{
+  Future pauseFetchingVLCStatus() async {
     tcpClientForVLC?.stopFetchingVLCStatus();
     //emit(VlcStatusDisconnected());
   }
 
-  Future resumeFetchingVLCStatus() async{
+  Future resumeFetchingVLCStatus() async {
     tcpClientForVLC?.startFetchingVLCStatus();
     //emit(VlcStatusDisconnected());
   }
 
-  Future updateVLCStatus(String updateRequest) async{
+  Future updateVLCStatus(String updateRequest) async {
     tcpClientForVLC?.sendRequestToVLC(updateRequest);
   }
-
 }

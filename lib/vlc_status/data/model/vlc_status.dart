@@ -1,7 +1,6 @@
 import 'package:vlc_m_remote/utils/utils.dart';
 
 class VLCStatus {
-
   VLCStatus({
     this.fullscreen = 0,
     this.audiodelay = 0,
@@ -46,40 +45,40 @@ class VLCStatus {
   //late final Stats stats;
   //late final Audiofilters audiofilters;
   //late final Videoeffects videoeffects;
-  
 
-  String get title{
-    var title  = information?.category.meta.title ?? "";
-    return title.isNotEmpty ? title : information?.category.meta.filename ?? "movie/song name";
+  String get title {
+    var title = information?.category.meta.title ?? "";
+    return title.isNotEmpty
+        ? title
+        : information?.category.meta.filename ?? "movie/song name";
   }
 
-  String get album{
+  String get album {
     return information?.category.meta.album ?? "album";
   }
 
-  String get artist{
+  String get artist {
     return information?.category.meta.artist ?? "artist";
   }
 
-  bool get isLatestVersionVLC{
+  bool get isLatestVersionVLC {
     return version.contains("3.") ? true : false;
   }
 
-  String get timeInHhMmSs{
-    return formatSecondsInHhMmSs(time); 
+  String get timeInHhMmSs {
+    return formatSecondsInHhMmSs(time);
   }
 
-  String get lengthInHhMmSs{
+  String get lengthInHhMmSs {
     return formatSecondsInHhMmSs(length);
   }
 
-  String get volumeInPercentage{
+  String get volumeInPercentage {
     //320 is 125% by default for vlc 512 is 200%
-    return "  ${(double.parse((volume/256).toStringAsFixed(2)) * 100).toStringAsFixed(0)}%";
+    return "  ${(double.parse((volume / 256).toStringAsFixed(2)) * 100).toStringAsFixed(0)}%";
   }
 
-  
-  VLCStatus.fromJson(Map<String, dynamic> json){
+  VLCStatus.fromJson(Map<String, dynamic> json) {
     fullscreen = (json['fullscreen'] == true) ? 1 : 0;
     audiodelay = json['audiodelay'];
     apiversion = json['apiversion'];
@@ -92,23 +91,23 @@ class VLCStatus {
     state = json['state'];
     loop = json['loop'];
     version = json['version'];
-    position =  json['position'].toDouble();
+    position = json['position'].toDouble();
     repeat = json['repeat'];
     subtitledelay = json['subtitledelay'];
 
-    if(json['information'] != null){
+    if (json['information'] != null) {
       information = Information.fromJson(json['information']);
     }
-    if(json['equalizer'] != null){
+    if (json['equalizer'] != null) {
       equalizer = List.castFrom<dynamic, dynamic>(json['equalizer']);
     }
 
     //stats = Stats.fromJson(json['stats']);
     //audiofilters = Audiofilters.fromJson(json['audiofilters']);
     //videoeffects = Videoeffects.fromJson(json['videoeffects']);
-
   }
 }
+
 class Information {
   Information({
     required this.chapter,
@@ -122,8 +121,8 @@ class Information {
   late final int title;
   late final Category category;
   late final List<dynamic> titles;
-  
-  Information.fromJson(Map<String, dynamic> json){
+
+  Information.fromJson(Map<String, dynamic> json) {
     chapter = json['chapter'];
     chapters = List.castFrom<dynamic, dynamic>(json['chapters']);
     title = json['title'];
@@ -135,18 +134,18 @@ class Information {
 class Category {
   Category({
     required this.meta,
-   // required this.stream0,
+    // required this.stream0,
   });
   late final Meta meta;
   //late final Stream0 stream0;
-  
-  Category.fromJson(Map<String, dynamic> json){
+
+  Category.fromJson(Map<String, dynamic> json) {
     meta = Meta.fromJson(json['meta']);
-   // stream0 = Stream0.fromJson(json['Stream 0']);
+    // stream0 = Stream0.fromJson(json['Stream 0']);
   }
 }
 
-class Meta{
+class Meta {
   Meta({
     required this.album,
     required this.trackNumber,
@@ -163,8 +162,8 @@ class Meta{
   late final String? artworkUrl;
   late final String? artist;
   late final String? filename;
-  
-  Meta.fromJson(Map<String, dynamic> json){
+
+  Meta.fromJson(Map<String, dynamic> json) {
     album = json['album'];
     trackNumber = json['track_number'];
     title = json['title'];

@@ -9,16 +9,22 @@ class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
   VlcBrowseItemCubit(this.vlcServerToToConnect) : super(VlcBrowseItemInitial());
   VLCBrowseRepository? vlcBrowseRepository;
 
-Future fetchVlcBrowseItems() async {
+  Future fetchVlcBrowseItems(String? pathToBrowse) async {
     try {
       emit(const VlcBrowseLoading());
-      vlcBrowseRepository = VLCBrowseRepository(ipAddress: vlcServerToToConnect.ipAddress, vlcPort: vlcServerToToConnect.vlcPort, vlcPassword: vlcServerToToConnect.vlcPassword!);
-      vlcBrowseRepository?.getFolderData().then((value) {
-        if(value is VlcBrowseResponse){
+      vlcBrowseRepository = VLCBrowseRepository(
+          ipAddress: vlcServerToToConnect.ipAddress,
+          vlcPort: vlcServerToToConnect.vlcPort,
+          vlcPassword: vlcServerToToConnect.vlcPassword!);
+      vlcBrowseRepository?.getFolderData(pathToBrowse).then((value) {
+        if (value is VlcBrowseResponse) {
           emit(VlcBrowseLoaded(value));
+        } else {
+          emit(const VlcBrowseLoadingFailed());
         }
-      } );      
+      });
     } catch (e) {
+      emit(const VlcBrowseLoadingFailed());
       //print(e.toString());
     }
   }

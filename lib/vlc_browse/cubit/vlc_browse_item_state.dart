@@ -12,6 +12,7 @@ class VlcBrowseItemInitial extends VlcBrowseItemState {}
 class VlcBrowseLoading extends VlcBrowseItemState {
   const VlcBrowseLoading();
 }
+
 class VlcBrowseLoaded extends VlcBrowseItemState {
   final VlcBrowseResponse vlcBrowseResponse;
   const VlcBrowseLoaded(this.vlcBrowseResponse);

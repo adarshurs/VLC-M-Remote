@@ -9,7 +9,8 @@ class VLCServer {
   String vlcHomeFolderPath = "uri=file%3A%2F%2F%2F";
   bool isPreviouslyConnected = false;
 
-  VLCServer({required this.ipAddress, this.vlcPort = "8080", required this.vlcPassword});
-  }
-
-  
+  VLCServer(
+      {required this.ipAddress,
+      this.vlcPort = "8080",
+      required this.vlcPassword});
+}

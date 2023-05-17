@@ -11,13 +11,13 @@ class VlcBrowseResponse {
       json['element'].forEach((v) {
         folders!.add(VlcBrowseItem.fromJson(v));
       });
-    } else { 
+    } else {
       errorMessage = "Error";
     }
   }
 }
 
-class VlcBrowseItem{
+class VlcBrowseItem {
   String? type;
   String? path;
   String? name;
@@ -83,5 +83,4 @@ class VlcBrowseItem{
   //   }
   //   return vlcFolders;
   // }
-
 }

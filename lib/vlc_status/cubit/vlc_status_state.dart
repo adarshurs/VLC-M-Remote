@@ -8,6 +8,7 @@ abstract class VlcStatusState {
 class VlcStatusInitial extends VlcStatusState {
   const VlcStatusInitial();
 }
+
 class VlcStatusConnecting extends VlcStatusState {
   const VlcStatusConnecting();
 }
@@ -29,21 +30,17 @@ class VlcStatusIncorrectPassword extends VlcStatusState {
 }
 
 class VlcStatusLoaded extends VlcStatusState {
-final VLCStatusResponse vlcStatusResponse;
+  final VLCStatusResponse vlcStatusResponse;
   const VlcStatusLoaded(this.vlcStatusResponse);
 
   @override
-  bool operator ==(Object other){
+  bool operator ==(Object other) {
     //if(identical(this, 0)) return true;
-    if(identical(this, other)) return true;
-    return other is VlcStatusLoaded && other.vlcStatusResponse == vlcStatusResponse;
+    if (identical(this, other)) return true;
+    return other is VlcStatusLoaded &&
+        other.vlcStatusResponse == vlcStatusResponse;
   }
 
   @override
   int get hashCode => vlcStatusResponse.hashCode;
 }
-
-
-
-
-
