@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vlc_m_remote/vlc_server.dart';
+import 'package:vlc_m_remote/base/model/vlc_server.dart';
 import 'package:vlc_m_remote/vlc_status/data/model/vlc_status_response.dart';
 import 'package:vlc_m_remote/vlc_status/data/vlc_status_repository.dart';
 
