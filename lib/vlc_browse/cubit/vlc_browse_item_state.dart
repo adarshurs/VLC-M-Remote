@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_item.dart';
+import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_response.dart';
 //sample comment
 
 @immutable

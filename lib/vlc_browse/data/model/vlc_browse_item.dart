@@ -1,22 +1,3 @@
-class VlcBrowseResponse {
-  List<VlcBrowseItem>? folders;
-  String? errorMessage;
-
-  VlcBrowseResponse({this.folders});
-
-  VlcBrowseResponse.fromJson(Map<String, dynamic> json) {
-    if (json['element'] != null) {
-      folders = <VlcBrowseItem>[];
-      errorMessage = null;
-      json['element'].forEach((v) {
-        folders!.add(VlcBrowseItem.fromJson(v));
-      });
-    } else {
-      errorMessage = "Error";
-    }
-  }
-}
-
 class VlcBrowseItem {
   String? type;
   String? path;

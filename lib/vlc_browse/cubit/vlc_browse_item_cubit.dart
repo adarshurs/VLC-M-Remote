@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vlc_m_remote/base/model/vlc_server.dart';
 import 'package:vlc_m_remote/vlc_browse/cubit/vlc_browse_item_state.dart';
-import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_item.dart';
+import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_response.dart';
 import 'package:vlc_m_remote/vlc_browse/data/vlc_browse_repository.dart';
 
 class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {

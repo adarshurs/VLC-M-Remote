@@ -8,6 +8,9 @@ class VLCStatusResponse {
     required this.errorMessage,
   });
 
+
+  
+
   //VLCStatusResponse(this.vlcStatus, this.errorMessage);
 
   // VLCStatusResponse copyWith({

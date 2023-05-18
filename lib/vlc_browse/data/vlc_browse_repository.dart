@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_item.dart';
+import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_response.dart';
 
 class VLCBrowseRepository {
   final String ipAddress;
