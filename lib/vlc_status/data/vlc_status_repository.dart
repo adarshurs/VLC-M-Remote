@@ -9,7 +9,7 @@ class VLCStatusRepository {
   final String ipAddress;
   late final String _password;
   final String vlcPort;
-  final String _vlcStatusPath = "requests/status.json?";
+  final String _vlcStatusPath = "/requests/status.json?";
   Socket? _socket;
 
   Timer? _getVLCStatusTimer;
@@ -41,7 +41,6 @@ class VLCStatusRepository {
     }, onResume: () {
       stopFetchingVLCStatus();
     });
-//    startFetchingVLCStatus();
   }
 
   int _noResponseDetectionCounter = 0;
@@ -144,7 +143,7 @@ class VLCStatusRepository {
   }
 
   List<int> _getRequestHeader(String requestToSend) {
-    String data = "GET /$requestToSend HTTP/1.1\r\n";
+    String data = "GET $requestToSend HTTP/1.1\r\n";
     List<List<String>> requestHeaders = [
       ["Authorization", "Basic $_password"]
     ];

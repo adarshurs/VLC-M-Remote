@@ -6,8 +6,13 @@ import 'package:vlc_m_remote/vlc_browse/data/vlc_browse_repository.dart';
 
 class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
   final VLCServer vlcServerToToConnect;
-  VlcBrowseItemCubit(this.vlcServerToToConnect) : super(VlcBrowseItemInitial());
+  VlcBrowseItemCubit(this.vlcServerToToConnect)
+      : super(VlcBrowseItemInitial()) {
+    fetchVlcBrowseItems(null);
+  }
+
   VLCBrowseRepository? vlcBrowseRepository;
+  VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
 
   Future fetchVlcBrowseItems(String? pathToBrowse) async {
     try {
