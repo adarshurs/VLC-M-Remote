@@ -7,8 +7,8 @@ abstract class VlcPlaylistItemState {
 
 class VlcPlaylistItemInitial extends VlcPlaylistItemState {}
 
-class VlcBrowseLoading extends VlcPlaylistItemState {
-  const VlcBrowseLoading();
+class VlcPlaylistLoading extends VlcPlaylistItemState {
+  const VlcPlaylistLoading();
 }
 
 class VlcPlaylistLoaded extends VlcPlaylistItemState {

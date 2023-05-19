@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:vlc_m_remote/vlc_playlist/data/model/vlc_playlist_response.dart';
 
 class VLCPlaylistRepository {
@@ -19,6 +18,7 @@ class VLCPlaylistRepository {
   Stream? get stream => _streamController?.stream;
 
   int _reTryFetchingCounter = 0;
+  int _noResponseDetectionCounter = 0;
   VlcPlaylistResponse _vlcStatusResponse = VlcPlaylistResponse();
 
   VLCPlaylistRepository(
@@ -39,8 +39,6 @@ class VLCPlaylistRepository {
       stopFetchingVLCStatus();
     });
   }
-
-  int _noResponseDetectionCounter = 0;
 
   startFetchingVLCStatus() async {
     _noResponseDetectionCounter = 0;
@@ -106,7 +104,7 @@ class VLCPlaylistRepository {
             VlcPlaylistResponse.fromJson(jsonDecode(body));
 
         if (_streamController != null && !_streamController!.isClosed) {
-          _streamController?.sink.add(_vlcStatusResponse);
+          _streamController?.sink.add(_vlcPlaylistResponse);
         }
       } catch (e) {
         print(e.toString());
