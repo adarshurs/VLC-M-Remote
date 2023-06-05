@@ -4,7 +4,7 @@ class VlcPlaylistResponse {
   List<VlcPlaylistItem>? playlist;
   List<VlcPlaylistItem>? mediaLibrary;
   List<VlcPlaylistItem>? somethingElse;
-  String? errorMessage;
+  String errorMessage = "";
 
   VlcPlaylistResponse();
 

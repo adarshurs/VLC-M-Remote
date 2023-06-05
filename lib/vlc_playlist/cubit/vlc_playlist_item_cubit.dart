@@ -11,7 +11,9 @@ part 'vlc_playlist_item_state.dart';
 class VlcPlaylistItemCubit extends Cubit<VlcPlaylistItemState> {
   final VLCServer vlcServerToToConnect;
   VlcPlaylistItemCubit(this.vlcServerToToConnect)
-      : super(VlcPlaylistItemInitial());
+      : super(VlcPlaylistItemInitial()) {
+    fetchVLCPlaylist();
+  }
 
   VLCPlaylistRepository? tcpClientForVLCPlaylist;
   StreamSubscription<dynamic>? _vlcStatusResponseSubscription;
@@ -27,7 +29,7 @@ class VlcPlaylistItemCubit extends Cubit<VlcPlaylistItemState> {
       _vlcStatusResponseSubscription =
           tcpClientForVLCPlaylist?.stream?.listen((event) {
         if (!isClosed) {
-          if ((event as VlcPlaylistResponse).errorMessage!.isEmpty) {
+          if ((event as VlcPlaylistResponse).errorMessage.isEmpty) {
             emit(VlcPlaylistLoaded(event));
           } else if ((event).errorMessage == "VLCNotFound") {
             emit(const VlcPlaylistLoadingFailed());

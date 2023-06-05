@@ -11,7 +11,7 @@ class VLCPlaylistRepository {
   Socket? _socket;
 
   Timer? _getVLCStatusTimer;
-  final Duration _statusUpdateInterval = const Duration(milliseconds: 950);
+  final Duration _playlistUpdateInterval = const Duration(milliseconds: 950);
   bool _keepTryingToConnect = false;
 
   StreamController? _streamController;
@@ -19,7 +19,7 @@ class VLCPlaylistRepository {
 
   int _reTryFetchingCounter = 0;
   int _noResponseDetectionCounter = 0;
-  VlcPlaylistResponse _vlcStatusResponse = VlcPlaylistResponse();
+  VlcPlaylistResponse _vlcPlaylistResponse = VlcPlaylistResponse();
 
   VLCPlaylistRepository(
       {required this.ipAddress,
@@ -28,7 +28,7 @@ class VLCPlaylistRepository {
     _password = base64Url.encode(utf8.encode("" + ":" + vlcPassword));
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
-    _vlcStatusResponse = VlcPlaylistResponse();
+    _vlcPlaylistResponse = VlcPlaylistResponse();
     _streamController = StreamController<VlcPlaylistResponse>(onListen: () {
       startFetchingVLCStatus();
     }, onCancel: () {
@@ -47,12 +47,12 @@ class VLCPlaylistRepository {
       if (isConnected) {
         //print("Socket Connected");
         sendRequestToVLC();
-        _getVLCStatusTimer = Timer.periodic(_statusUpdateInterval, (timer) {
+        _getVLCStatusTimer = Timer.periodic(_playlistUpdateInterval, (timer) {
           sendRequestToVLC();
           _noResponseDetectionCounter++;
           if (_noResponseDetectionCounter == 10) {
             _noResponseDetectionCounter = 0;
-            _emitVLCNotFoundError();
+            _emitNoResponseError();
           }
         });
       } else {
@@ -81,15 +81,15 @@ class VLCPlaylistRepository {
       _reTryFetchingCounter++;
 
       if (_reTryFetchingCounter >= 5) {
-        _emitVLCNotFoundError();
+        _emitNoResponseError();
         _reTryFetchingCounter = 0;
       }
     }
   }
 
-  _emitVLCNotFoundError() {
-    _vlcStatusResponse.errorMessage = "VLCNotFound";
-    _streamController?.sink.add(_vlcStatusResponse);
+  _emitNoResponseError() {
+    _vlcPlaylistResponse.errorMessage = "VLCNotFound";
+    _streamController?.sink.add(_vlcPlaylistResponse);
   }
 
   _onDataReceived(String dataReceived) {
@@ -100,11 +100,11 @@ class VLCPlaylistRepository {
       var body = dataReceived.substring(index);
       try {
         //VLCStatus vlcStatus = VLCStatus.fromJson(jsonDecode(body));
-        VlcPlaylistResponse _vlcPlaylistResponse =
+        VlcPlaylistResponse vlcPlaylistResponse =
             VlcPlaylistResponse.fromJson(jsonDecode(body));
 
         if (_streamController != null && !_streamController!.isClosed) {
-          _streamController?.sink.add(_vlcPlaylistResponse);
+          _streamController?.sink.add(vlcPlaylistResponse);
         }
       } catch (e) {
         print(e.toString());
@@ -148,7 +148,6 @@ class VLCPlaylistRepository {
     return utf8.encode(data);
   }
 
-  //passing a null to requestToSend, gets the vlc status
   sendRequestToVLC() {
     _noResponseDetectionCounter = 0;
     _socket?.add(_getRequestHeader(_vlcPlaylistPath));
