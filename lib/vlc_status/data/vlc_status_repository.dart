@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:vlc_m_remote/base/utils/utils.dart';
 import 'model/vlc_status.dart';
 import 'model/vlc_status_response.dart';
 
@@ -20,6 +20,8 @@ class VLCStatusRepository {
   Stream? get stream => _streamController?.stream;
 
   int _reTryFetchingCounter = 0;
+  int _noResponseDetectionCounter = 0;
+
   VLCStatusResponse _vlcStatusResponse =
       VLCStatusResponse(vlcStatus: VLCStatus(), errorMessage: '');
 
@@ -27,7 +29,7 @@ class VLCStatusRepository {
       {required this.ipAddress,
       this.vlcPort = "8080",
       required String vlcPassword}) {
-    _password = base64Url.encode(utf8.encode("" + ":" + vlcPassword));
+    _password = vlcPassword; //base64Url.encode(utf8.encode("" + ":" + vlcPassword));
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
     _vlcStatusResponse =
@@ -42,8 +44,6 @@ class VLCStatusRepository {
       stopFetchingVLCStatus();
     });
   }
-
-  int _noResponseDetectionCounter = 0;
 
   startFetchingVLCStatus() async {
     _noResponseDetectionCounter = 0;
@@ -142,21 +142,9 @@ class VLCStatusRepository {
     return isConnected;
   }
 
-  List<int> _getRequestHeader(String requestToSend) {
-    String data = "GET $requestToSend HTTP/1.1\r\n";
-    List<List<String>> requestHeaders = [
-      ["Authorization", "Basic $_password"]
-    ];
-    for (var element in requestHeaders) {
-      data += "${element[0]}:${element[1]}\r\n";
-    }
-    data += "\r\n";
-    return utf8.encode(data);
-  }
-
   //passing a null to requestToSend, gets the vlc status
   sendRequestToVLC(String? requestToSend) {
     _noResponseDetectionCounter = 0;
-    _socket?.add(_getRequestHeader(_vlcStatusPath + (requestToSend ?? "")));
+    _socket?.add(getHeaderForVLCRequest(_vlcStatusPath + (requestToSend ?? ""), _password));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:vlc_m_remote/base/utils/utils.dart';
 import 'package:vlc_m_remote/vlc_playlist/data/model/vlc_playlist_response.dart';
 
 class VLCPlaylistRepository {
@@ -25,7 +26,7 @@ class VLCPlaylistRepository {
       {required this.ipAddress,
       this.vlcPort = "8080",
       required String vlcPassword}) {
-    _password = base64Url.encode(utf8.encode("" + ":" + vlcPassword));
+    _password = vlcPassword;
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
     _vlcPlaylistResponse = VlcPlaylistResponse();
@@ -45,7 +46,6 @@ class VLCPlaylistRepository {
     _getVLCStatusTimer = null;
     await connectToVLC().then((isConnected) async {
       if (isConnected) {
-        //print("Socket Connected");
         sendRequestToVLC();
         _getVLCStatusTimer = Timer.periodic(_playlistUpdateInterval, (timer) {
           sendRequestToVLC();
@@ -79,7 +79,6 @@ class VLCPlaylistRepository {
       await Future.delayed(const Duration(seconds: 1));
       startFetchingVLCStatus();
       _reTryFetchingCounter++;
-
       if (_reTryFetchingCounter >= 5) {
         _emitNoResponseError();
         _reTryFetchingCounter = 0;
@@ -88,14 +87,12 @@ class VLCPlaylistRepository {
   }
 
   _emitNoResponseError() {
-    _vlcPlaylistResponse.errorMessage = "VLCNotFound";
+    _vlcPlaylistResponse.errorMessage = "VLCNoResponse";
     _streamController?.sink.add(_vlcPlaylistResponse);
   }
 
   _onDataReceived(String dataReceived) {
-    //print("dataReceived");
     int index = dataReceived.indexOf("{");
-    //print(index);
     if (index != -1) {
       var body = dataReceived.substring(index);
       try {
@@ -136,20 +133,8 @@ class VLCPlaylistRepository {
     return isConnected;
   }
 
-  List<int> _getRequestHeader(String requestToSend) {
-    String data = "GET $requestToSend HTTP/1.1\r\n";
-    List<List<String>> requestHeaders = [
-      ["Authorization", "Basic $_password"]
-    ];
-    for (var element in requestHeaders) {
-      data += "${element[0]}:${element[1]}\r\n";
-    }
-    data += "\r\n";
-    return utf8.encode(data);
-  }
-
   sendRequestToVLC() {
     _noResponseDetectionCounter = 0;
-    _socket?.add(_getRequestHeader(_vlcPlaylistPath));
+    _socket?.add(getHeaderForVLCRequest(_vlcPlaylistPath, _password));
   }
 }
