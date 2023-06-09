@@ -7,9 +7,6 @@ import 'package:vlc_m_remote/base/utils/utils.dart';
 import 'package:vlc_m_remote/vlc_playlist/data/model/vlc_playlist_response.dart';
 
 class VLCPlaylistRepository {
-  // final String ipAddress;
-  // late final String _password;
-  // final String vlcPort;
   VLCServer connectedVLCServer;
   final String _vlcPlaylistPath = "/requests/playlist.json?";
   Socket? _socket;
@@ -25,12 +22,7 @@ class VLCPlaylistRepository {
   int _noResponseDetectionCounter = 0;
   VlcPlaylistResponse _vlcPlaylistResponse = VlcPlaylistResponse();
 
-  VLCPlaylistRepository(
-      // {required this.ipAddress,
-      // this.vlcPort = "8080",
-      // required String vlcPassword}) {
-      {required this.connectedVLCServer}) {
-    //_password = vlcPassword;
+  VLCPlaylistRepository({required this.connectedVLCServer}) {
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
     _vlcPlaylistResponse = VlcPlaylistResponse();

@@ -27,8 +27,6 @@ class VLCStatusRepository {
       VLCStatusResponse(vlcStatus: VLCStatus(), errorMessage: '');
 
   VLCStatusRepository({required this.connectedVLCServer}) {
-    // _password =
-    //     vlcPassword; //base64Url.encode(utf8.encode("" + ":" + vlcPassword));
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
     _vlcStatusResponse =
