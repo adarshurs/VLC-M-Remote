@@ -5,9 +5,8 @@ import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_response.dart';
 import 'package:vlc_m_remote/vlc_browse/data/vlc_browse_repository.dart';
 
 class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
-  final VLCServer vlcServerToToConnect;
-  VlcBrowseItemCubit(this.vlcServerToToConnect)
-      : super(VlcBrowseItemInitial()) {
+  final VLCServer connectedVLCServer;
+  VlcBrowseItemCubit(this.connectedVLCServer) : super(VlcBrowseItemInitial()) {
     fetchVlcBrowseItems(null);
   }
 
@@ -17,10 +16,8 @@ class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
   Future fetchVlcBrowseItems(String? pathToBrowse) async {
     try {
       emit(const VlcBrowseLoading());
-      vlcBrowseRepository = VLCBrowseRepository(
-          ipAddress: vlcServerToToConnect.ipAddress,
-          vlcPort: vlcServerToToConnect.vlcPort,
-          vlcPassword: vlcServerToToConnect.vlcPassword!);
+      vlcBrowseRepository =
+          VLCBrowseRepository(connectedVLCServer: connectedVLCServer);
       vlcBrowseRepository?.getFolderData(pathToBrowse).then((value) {
         if (value is VlcBrowseResponse) {
           emit(VlcBrowseLoaded(value));

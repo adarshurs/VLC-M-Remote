@@ -1,31 +1,29 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:vlc_m_remote/base/model/vlc_server.dart';
 import 'package:vlc_m_remote/vlc_browse/data/model/vlc_browse_response.dart';
 
 class VLCBrowseRepository {
-  final String ipAddress;
-  late final String _password;
-  final String vlcPort;
+  VLCServer connectedVLCServer;
 
-  final String _vlcBrowsePathPrefix = "/requests/browse.json";
+  final String _vlcBrowsePathPrefix =
+      "/requests/browse.json"; //no need to use '?' with the http package
 
-  final String _vlcBrowseDefaultPath =
-      "file:///"; //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
+  final String _vlcBrowseDefaultPath = "file:///";
+  //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
   //final String _vlcBrowseDrivesPath = "uri=file%3A%2F%2F%2F";
 
-  VLCBrowseRepository(
-      {required this.ipAddress,
-      this.vlcPort = "8080",
-      required String vlcPassword}) {
-    _password =
-        vlcPassword; //base64Url.encode(utf8.encode("" + ":" + vlcPassword));
-  }
+  VLCBrowseRepository({required this.connectedVLCServer});
 
   String get basicAuth {
-    return 'Basic ${base64.encode(utf8.encode(':$_password'))}';
+    String password = connectedVLCServer.vlcPassword ?? "";
+    return 'Basic ${base64.encode(utf8.encode(':$password'))}';
   }
 
   Future<VlcBrowseResponse?> getFolderData(String? pathToBrowse) async {
+    String ipAddress = connectedVLCServer.ipAddress;
+    String vlcPort = connectedVLCServer.vlcPort;
     var url = Uri.http("$ipAddress:$vlcPort", _vlcBrowsePathPrefix,
         {'uri': (pathToBrowse ?? _vlcBrowseDefaultPath)});
 

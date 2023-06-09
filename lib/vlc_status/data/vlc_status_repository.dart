@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:vlc_m_remote/base/model/vlc_server.dart';
 import 'package:vlc_m_remote/base/utils/utils.dart';
+
 import 'model/vlc_status.dart';
 import 'model/vlc_status_response.dart';
 
 class VLCStatusRepository {
-  final String ipAddress;
-  late final String _password;
-  final String vlcPort;
+  VLCServer connectedVLCServer;
   final String _vlcStatusPath = "/requests/status.json?";
   Socket? _socket;
 
@@ -25,11 +26,9 @@ class VLCStatusRepository {
   VLCStatusResponse _vlcStatusResponse =
       VLCStatusResponse(vlcStatus: VLCStatus(), errorMessage: '');
 
-  VLCStatusRepository(
-      {required this.ipAddress,
-      this.vlcPort = "8080",
-      required String vlcPassword}) {
-    _password = vlcPassword; //base64Url.encode(utf8.encode("" + ":" + vlcPassword));
+  VLCStatusRepository({required this.connectedVLCServer}) {
+    // _password =
+    //     vlcPassword; //base64Url.encode(utf8.encode("" + ":" + vlcPassword));
     _keepTryingToConnect = true;
     _reTryFetchingCounter = 0;
     _vlcStatusResponse =
@@ -123,7 +122,8 @@ class VLCStatusRepository {
   Future<bool> connectToVLC() async {
     bool isConnected = false;
     try {
-      _socket = await Socket.connect(ipAddress, int.parse(vlcPort),
+      _socket = await Socket.connect(
+          connectedVLCServer.ipAddress, int.parse(connectedVLCServer.vlcPort),
           timeout: const Duration(milliseconds: 2000));
       isConnected = true;
       _socket!.listen((event) {
@@ -145,6 +145,7 @@ class VLCStatusRepository {
   //passing a null to requestToSend, gets the vlc status
   sendRequestToVLC(String? requestToSend) {
     _noResponseDetectionCounter = 0;
-    _socket?.add(getHeaderForVLCRequest(_vlcStatusPath + (requestToSend ?? ""), _password));
+    _socket?.add(getHeaderForVLCRequest(_vlcStatusPath + (requestToSend ?? ""),
+        connectedVLCServer.vlcPassword ?? ""));
   }
 }

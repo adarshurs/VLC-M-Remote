@@ -21,10 +21,8 @@ class VlcStatusCubit extends Cubit<VlcStatusState> {
     try {
       emit(const VlcStatusConnecting());
       _vlcStatusResponseSubscription = null;
-      tcpClientForVLC = VLCStatusRepository(
-          ipAddress: vlcServerToToConnect.ipAddress,
-          vlcPort: vlcServerToToConnect.vlcPort,
-          vlcPassword: vlcServerToToConnect.vlcPassword!);
+      tcpClientForVLC =
+          VLCStatusRepository(connectedVLCServer: vlcServerToToConnect);
       _vlcStatusResponseSubscription = tcpClientForVLC?.stream?.listen((event) {
         if (!isClosed) {
           if ((event as VLCStatusResponse).errorMessage.isEmpty) {

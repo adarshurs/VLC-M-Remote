@@ -9,8 +9,8 @@ import 'package:vlc_m_remote/vlc_playlist/data/vlc_playlist_repository.dart';
 part 'vlc_playlist_item_state.dart';
 
 class VlcPlaylistItemCubit extends Cubit<VlcPlaylistItemState> {
-  final VLCServer vlcServerToToConnect;
-  VlcPlaylistItemCubit(this.vlcServerToToConnect)
+  final VLCServer connectedVLCServer;
+  VlcPlaylistItemCubit(this.connectedVLCServer)
       : super(VlcPlaylistItemInitial()) {
     fetchVLCPlaylist();
   }
@@ -22,10 +22,8 @@ class VlcPlaylistItemCubit extends Cubit<VlcPlaylistItemState> {
     try {
       emit(const VlcPlaylistLoading());
       _vlcStatusResponseSubscription = null;
-      tcpClientForVLCPlaylist = VLCPlaylistRepository(
-          ipAddress: vlcServerToToConnect.ipAddress,
-          vlcPort: vlcServerToToConnect.vlcPort,
-          vlcPassword: vlcServerToToConnect.vlcPassword!);
+      tcpClientForVLCPlaylist =
+          VLCPlaylistRepository(connectedVLCServer: connectedVLCServer);
       _vlcStatusResponseSubscription =
           tcpClientForVLCPlaylist?.stream?.listen((event) {
         if (!isClosed) {
