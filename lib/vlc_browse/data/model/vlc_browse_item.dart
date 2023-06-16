@@ -11,6 +11,8 @@ class VlcBrowseItem {
   String? uri;
   int? size;
 
+  bool get isDirectory => (type == "dir") ? true : false;
+
   VlcBrowseItem(
       {this.type,
       this.path,

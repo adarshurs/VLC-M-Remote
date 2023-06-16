@@ -10,9 +10,9 @@ class VLCBrowseRepository {
   final String _vlcBrowsePathPrefix =
       "/requests/browse.json"; //no need to use '?' with the http package
 
-  final String _vlcBrowseDefaultPath = "file:///";
-  //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
-  //final String _vlcBrowseDrivesPath = "uri=file%3A%2F%2F%2F";
+  // final String _vlcBrowseDefaultPath = "file:///";
+  // //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
+  // final String _vlcBrowseDrivesPath = "uri=file%3A%2F%2F%2F";
 
   VLCBrowseRepository({required this.connectedVLCServer});
 
@@ -25,7 +25,7 @@ class VLCBrowseRepository {
     String ipAddress = connectedVLCServer.ipAddress;
     String vlcPort = connectedVLCServer.vlcPort;
     var url = Uri.http("$ipAddress:$vlcPort", _vlcBrowsePathPrefix,
-        {'uri': (pathToBrowse ?? _vlcBrowseDefaultPath)});
+        {'uri': (pathToBrowse ?? VLCBrowseConstants.vlcBrowseDefaultPath)});
 
     var response = await http
         .get(url, headers: <String, String>{'authorization': basicAuth});
@@ -37,7 +37,7 @@ class VLCBrowseRepository {
         return VlcBrowseResponse.fromJson(jsonResponse);
       } catch (e) {
         VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
-        vlcBrowseResponse.errorMessage = "NoResponse";
+        vlcBrowseResponse.errorMessage = "ParsingError";
         return VlcBrowseResponse();
       }
     } else if (response.statusCode == 401) {
@@ -50,4 +50,16 @@ class VLCBrowseRepository {
       return VlcBrowseResponse();
     }
   }
+}
+
+class VLCBrowseConstants {
+  static String vlcBrowseDefaultPath = "file:///";
+  //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
+  static String vlcBrowseDrivesPath = "file:///"; //"file%3A%2F%2F%2F";
+
+  static String playBrowseItemPrefix = "command=in_play&input=";
+
+  static String addToPlaylistBrowseItemPrefix = "command=in_enqueue&input=";
+
+  static String addSubtitleBrowseItemPrefix = "command=addsubtitle&val=";
 }

@@ -7,17 +7,35 @@ import 'package:vlc_m_remote/vlc_browse/data/vlc_browse_repository.dart';
 class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
   final VLCServer connectedVLCServer;
   VlcBrowseItemCubit(this.connectedVLCServer) : super(VlcBrowseItemInitial()) {
+    vlcBrowseRepository =
+        VLCBrowseRepository(connectedVLCServer: connectedVLCServer);
     fetchVlcBrowseItems(null);
   }
 
   VLCBrowseRepository? vlcBrowseRepository;
   VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
 
-  Future fetchVlcBrowseItems(String? pathToBrowse) async {
+  Future playVlcBrowseItem(String browseItemPath) async {
+    _getBrowseItems(VLCBrowseConstants.playBrowseItemPrefix + browseItemPath);
+  }
+
+  Future addToPlaylistVlcBrowseItem(String browseItemPath) async {
+    _getBrowseItems(
+        VLCBrowseConstants.addToPlaylistBrowseItemPrefix + browseItemPath);
+  }
+
+  addAsSubtitleVlcBrowseItem(String browseItemPath) {
+    _getBrowseItems(
+        VLCBrowseConstants.addSubtitleBrowseItemPrefix + browseItemPath);
+  }
+
+  Future fetchVlcBrowseItems(String? request) async {
+    _getBrowseItems(request);
+  }
+
+  _getBrowseItems(String? pathToBrowse) {
     try {
       emit(const VlcBrowseLoading());
-      vlcBrowseRepository =
-          VLCBrowseRepository(connectedVLCServer: connectedVLCServer);
       vlcBrowseRepository?.getFolderData(pathToBrowse).then((value) {
         if (value is VlcBrowseResponse) {
           emit(VlcBrowseLoaded(value));
@@ -27,7 +45,6 @@ class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
       });
     } catch (e) {
       emit(const VlcBrowseLoadingFailed());
-      //print(e.toString());
     }
   }
 }
