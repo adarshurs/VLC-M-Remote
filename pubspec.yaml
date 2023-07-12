@@ -1,6 +1,6 @@
 name: vlc_m_remote
 description: VLC Remote package to connect and control VLC Media Player running on PC/Mac/Linux.
-version: 0.0.27 # flutter pub publish
+version: 0.0.28 # flutter pub publish
 homepage: https://github.com/adarshurs/VLC-M-Remote
 
 
