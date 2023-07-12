@@ -50,6 +50,32 @@ class VLCBrowseRepository {
       return VlcBrowseResponse();
     }
   }
+
+  Future<void> postPlayBrowseItemRequest(String? uriToPlay) async {
+    String ipAddress = connectedVLCServer.ipAddress;
+    String vlcPort = connectedVLCServer.vlcPort;
+
+    var bb = VLCBrowseConstants.playBrowseItemPrefix;
+    var bbb = uriToPlay ?? "";
+
+    var url = Uri.http(
+        "$ipAddress:$vlcPort", "/requests/status.json", {bb: uriToPlay ?? ""});
+
+    var response = await http
+        .get(url, headers: <String, String>{'authorization': basicAuth});
+    //print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      print("posted");
+    } else if (response.statusCode == 401) {
+      VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
+      vlcBrowseResponse.errorMessage = "IncorrectPassword";
+    } else {
+      VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
+      vlcBrowseResponse.errorMessage = "NoResponse";
+      // return VlcBrowseResponse();
+    }
+  }
 }
 
 class VLCBrowseConstants {
@@ -57,9 +83,21 @@ class VLCBrowseConstants {
   //"uri=file%3A%2F%2F%2F"; //"?uri=file:///";
   static String vlcBrowseDrivesPath = "file:///"; //"file%3A%2F%2F%2F";
 
+  //no need to add '=' for http package
+  // original "command=in_play&input=";
   static String playBrowseItemPrefix = "command=in_play&input=";
 
-  static String addToPlaylistBrowseItemPrefix = "command=in_enqueue&input=";
+  //no need to add '=' for http package
+  static String addToPlaylistBrowseItemPrefix =
+      "command=in_enqueue&input="; //"command=in_enqueue&input=";
 
-  static String addSubtitleBrowseItemPrefix = "command=addsubtitle&val=";
+  //no need to add '=' for http package
+  static String addSubtitleBrowseItemPrefix =
+      "command=addsubtitle&val="; //"command=addsubtitle&val="
+
+  static String playPlaylistIDPrefix = "command=pl_play&id=";
+
+  static String removeFromPlaylistIDPrefix = "command=pl_delete&id=";
+
+  static String emptyPlaylistPrefix = "command=pl_empty";
 }

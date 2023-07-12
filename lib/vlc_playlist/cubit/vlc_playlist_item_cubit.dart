@@ -40,7 +40,6 @@ class VlcPlaylistItemCubit extends Cubit<VlcPlaylistItemState> {
   }
 
   Future stopFetchingVLCPlaylist() async {
-    print("stopped");
     _vlcStatusResponseSubscription
         ?.cancel()
         .then((value) => _vlcStatusResponseSubscription = null);

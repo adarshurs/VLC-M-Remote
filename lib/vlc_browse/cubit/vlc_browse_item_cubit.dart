@@ -16,7 +16,7 @@ class VlcBrowseItemCubit extends Cubit<VlcBrowseItemState> {
   VlcBrowseResponse vlcBrowseResponse = VlcBrowseResponse();
 
   Future playVlcBrowseItem(String browseItemPath) async {
-    _getBrowseItems(VLCBrowseConstants.playBrowseItemPrefix + browseItemPath);
+    vlcBrowseRepository?.postPlayBrowseItemRequest(browseItemPath);
   }
 
   Future addToPlaylistVlcBrowseItem(String browseItemPath) async {
